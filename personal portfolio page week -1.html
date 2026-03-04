@@ -1,0 +1,951 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1">&lt;title&gt;Atharva Jibhakate — Portfolio&lt;/title&gt;</p>
+<p class="p1">&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
+<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&amp;family=Epilogue:ital,wght@0,300;0,400;0,500;1,400&amp;family=JetBrains+Mono:wght@300;400;500&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }</p>
+<p class="p2"><br></p>
+<p class="p1">:root {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--bg: <span class="Apple-converted-space">    </span>#0b0c0f;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--card: <span class="Apple-converted-space">  </span>#16181e;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--border: rgba(255,255,255,0.08);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--text: <span class="Apple-converted-space">  </span>#e8eaf0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--muted:<span class="Apple-converted-space">  </span>#6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--green:<span class="Apple-converted-space">  </span>#6ee7b7;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--amber:<span class="Apple-converted-space">  </span>#f59e0b;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--indigo: #818cf8;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">html { scroll-behavior: smooth; }</p>
+<p class="p2"><br></p>
+<p class="p1">body {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--bg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Epilogue', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.6;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow-x: hidden;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">::-webkit-scrollbar { width: 3px; }</p>
+<p class="p1">::-webkit-scrollbar-track { background: var(--bg); }</p>
+<p class="p1">::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── NAV ── */</p>
+<p class="p1">nav {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: fixed;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>top: 0; left: 0; right: 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>z-index: 100;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(11,12,15,0.95);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>backdrop-filter: blur(16px);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-bottom: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.1rem 3rem;</p>
+<p class="p1">}</p>
+<p class="p1">.logo {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Syne', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 800;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 1.1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-decoration: none;</p>
+<p class="p1">}</p>
+<p class="p1">.logo span { color: var(--green); }</p>
+<p class="p1">.nav-links { display: flex; gap: 2rem; list-style: none; }</p>
+<p class="p1">.nav-links a {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 11px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.08em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: color 0.2s;</p>
+<p class="p1">}</p>
+<p class="p1">.nav-links a:hover { color: var(--text); }</p>
+<p class="p1">.nav-btn {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 11px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.06em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--green);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--bg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.5rem 1.2rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-decoration: none;</p>
+<p class="p1">}</p>
+<p class="p1">.nav-btn:hover { opacity: 0.85; }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── HERO ── */</p>
+<p class="p1">.hero {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>min-height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 7rem 3rem 4rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>max-width: 1100px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 auto;</p>
+<p class="p1">}</p>
+<p class="p1">.hero-glow {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: fixed;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>top: 10%; right: 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 400px; height: 400px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: radial-gradient(circle, rgba(110,231,183,0.06) 0%, transparent 70%);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>z-index: 0;</p>
+<p class="p1">}</p>
+<p class="p1">.hero-content { position: relative; z-index: 1; max-width: 700px; }</p>
+<p class="p2"><br></p>
+<p class="p1">.hero-badge {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: inline-flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 11px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.1em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--green);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid rgba(110,231,183,0.3);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.4rem 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 100px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 2rem;</p>
+<p class="p1">}</p>
+<p class="p1">.badge-dot {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 6px; height: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--green);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>animation: pulse 2s infinite;</p>
+<p class="p1">}</p>
+<p class="p1">@keyframes pulse {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>0%,100% { opacity:1; transform:scale(1); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>50% { opacity:0.4; transform:scale(0.7); }</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.hero-name {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Syne', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(3rem, 8vw, 6.5rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 800;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 0.95;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: -0.03em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 0.8rem;</p>
+<p class="p1">}</p>
+<p class="p1">.hero-name .outline {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>-webkit-text-stroke: 1px rgba(232,234,240,0.25);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: block;</p>
+<p class="p1">}</p>
+<p class="p1">.hero-role {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.04em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1.5rem;</p>
+<p class="p1">}</p>
+<p class="p1">.hero-role em { color: var(--amber); font-style: normal; }</p>
+<p class="p1">.hero-bio {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 300;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: rgba(232,234,240,0.6);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>max-width: 500px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.8;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 2.5rem;</p>
+<p class="p1">}</p>
+<p class="p1">.hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }</p>
+<p class="p1">.btn-solid {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.05em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--green);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--bg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.8rem 1.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: opacity 0.2s, transform 0.2s;</p>
+<p class="p1">}</p>
+<p class="p1">.btn-solid:hover { opacity: 0.85; transform: translateY(-2px); }</p>
+<p class="p1">.btn-outline {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.05em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.8rem 1.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: border-color 0.2s, transform 0.2s;</p>
+<p class="p1">}</p>
+<p class="p1">.btn-outline:hover { border-color: rgba(255,255,255,0.3); transform: translateY(-2px); }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── SKILLS MARQUEE ── */</p>
+<p class="p1">.marquee-wrap {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-top: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-bottom: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.2rem 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: relative;</p>
+<p class="p1">}</p>
+<p class="p1">.marquee-wrap::before, .marquee-wrap::after {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>content: '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>top: 0; bottom: 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 80px; z-index: 2; pointer-events: none;</p>
+<p class="p1">}</p>
+<p class="p1">.marquee-wrap::before { left: 0; background: linear-gradient(to right, var(--bg), transparent); }</p>
+<p class="p1">.marquee-wrap::after<span class="Apple-converted-space">  </span>{ right: 0; background: linear-gradient(to left,<span class="Apple-converted-space">  </span>var(--bg), transparent); }</p>
+<p class="p1">.marquee-track {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 3rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: max-content;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>animation: marquee 18s linear infinite;</p>
+<p class="p1">}</p>
+<p class="p1">@keyframes marquee {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>from { transform: translateX(0); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>to <span class="Apple-converted-space">  </span>{ transform: translateX(-50%); }</p>
+<p class="p1">}</p>
+<p class="p1">.skill-item {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.05em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>white-space: nowrap;</p>
+<p class="p1">}</p>
+<p class="p1">.skill-dot { width: 5px; height: 5px; border-radius: 50%; }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── SECTIONS ── */</p>
+<p class="p1">.section {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>max-width: 1100px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 6rem 3rem;</p>
+<p class="p1">}</p>
+<p class="p1">.section-head {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 1.2rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 3rem;</p>
+<p class="p1">}</p>
+<p class="p1">.sec-num {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 11px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--green);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.1em;</p>
+<p class="p1">}</p>
+<p class="p1">.sec-title {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Syne', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: clamp(1.8rem, 3.5vw, 2.8rem);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 800;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: -0.03em;</p>
+<p class="p1">}</p>
+<p class="p1">.sec-line { flex: 1; height: 1px; background: var(--border); }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── PROJECTS GRID ── */</p>
+<p class="p1">.projects-grid {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: repeat(2, 1fr);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 1.5rem;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">.p-card {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--card);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: border-color 0.3s, transform 0.3s;</p>
+<p class="p1">}</p>
+<p class="p1">.p-card:hover {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-color: rgba(110,231,183,0.3);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transform: translateY(-4px);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* coloured visual banners */</p>
+<p class="p1">.p-visual {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>height: 160px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
+<p class="p1">}</p>
+<p class="p1">.v1 { background: linear-gradient(135deg,#0f2027,#203a43,#2c5364); }</p>
+<p class="p1">.v2 { background: linear-gradient(135deg,#1a0533,#3d1173,#5b21b6); }</p>
+<p class="p1">.v3 { background: linear-gradient(135deg,#052e16,#065f46,#047857); }</p>
+<p class="p1">.v4 { background: linear-gradient(135deg,#1e1b4b,#312e81,#4338ca); }</p>
+<p class="p1">.v5 { background: linear-gradient(135deg,#431407,#7c2d12,#b45309); }</p>
+<p class="p2"><br></p>
+<p class="p1">/* browser mockup */</p>
+<p class="p1">.mock-browser {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 80%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(0,0,0,0.45);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid rgba(255,255,255,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 6px 6px 0 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
+<p class="p1">}</p>
+<p class="p1">.mock-bar {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(255,255,255,0.07);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 6px 10px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 5px;</p>
+<p class="p1">}</p>
+<p class="p1">.mock-dot { width: 7px; height: 7px; border-radius: 50%; }</p>
+<p class="p1">.mock-dot:nth-child(1){ background:#ff5f57; }</p>
+<p class="p1">.mock-dot:nth-child(2){ background:#ffbd2e; }</p>
+<p class="p1">.mock-dot:nth-child(3){ background:#28ca42; }</p>
+<p class="p1">.mock-url {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(255,255,255,0.06);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 2px 8px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 9px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: rgba(255,255,255,0.3);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 6px;</p>
+<p class="p1">}</p>
+<p class="p1">.mock-body { padding: 10px; display: flex; flex-direction: column; gap: 5px; }</p>
+<p class="p1">.ml { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); }</p>
+<p class="p1">.ml.green { background: rgba(110,231,183,0.35); width: 45%; }</p>
+<p class="p1">.ml.med <span class="Apple-converted-space">  </span>{ width: 75%; }</p>
+<p class="p1">.ml.short { width: 55%; }</p>
+<p class="p2"><br></p>
+<p class="p1">/* terminal mockup */</p>
+<p class="p1">.mock-term {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 80%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(0,0,0,0.55);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid rgba(255,255,255,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow: hidden;</p>
+<p class="p1">}</p>
+<p class="p1">.term-body { padding: 10px; display: flex; flex-direction: column; gap: 4px; }</p>
+<p class="p1">.tl { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.25); }</p>
+<p class="p1">.tl .p { color: var(--green); }</p>
+<p class="p1">.tl .c { color: rgba(255,255,255,0.6); }</p>
+<p class="p1">.tl .o { color: rgba(245,158,11,0.8); }</p>
+<p class="p1">.blink {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: inline-block; width: 7px; height: 11px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--green);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>animation: blink 1s step-end infinite;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>vertical-align: -2px;</p>
+<p class="p1">}</p>
+<p class="p1">@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }</p>
+<p class="p2"><br></p>
+<p class="p1">/* card body */</p>
+<p class="p1">.p-body { padding: 1.4rem; flex: 1; display: flex; flex-direction: column; }</p>
+<p class="p1">.p-header {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: flex-start;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 0.5rem;</p>
+<p class="p1">}</p>
+<p class="p1">.p-name {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Syne', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 1.05rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: -0.01em;</p>
+<p class="p1">}</p>
+<p class="p1">.p-links { display: flex; gap: 0.4rem; }</p>
+<p class="p1">.p-link {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 28px; height: 28px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex; align-items: center; justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: border-color 0.2s, color 0.2s;</p>
+<p class="p1">}</p>
+<p class="p1">.p-link:hover { border-color: var(--green); color: var(--green); }</p>
+<p class="p1">.p-desc {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.875rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.65;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex: 1;</p>
+<p class="p1">}</p>
+<p class="p1">.p-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; }</p>
+<p class="p1">.tag {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 9px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.05em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.22rem 0.6rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 2px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(255,255,255,0.04);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1">}</p>
+<p class="p1">.tag.g { background:rgba(110,231,183,0.08); color:var(--green);<span class="Apple-converted-space">  </span>border-color:rgba(110,231,183,0.25); }</p>
+<p class="p1">.tag.a { background:rgba(245,158,11,0.08);<span class="Apple-converted-space">  </span>color:var(--amber);<span class="Apple-converted-space">  </span>border-color:rgba(245,158,11,0.25); }</p>
+<p class="p1">.tag.i { background:rgba(129,140,248,0.08); color:var(--indigo); border-color:rgba(129,140,248,0.25); }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── ABOUT ── */</p>
+<p class="p1">.about-grid {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1.3fr 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 4rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: start;</p>
+<p class="p1">}</p>
+<p class="p1">.about-text h3 {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Syne', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: -0.02em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.3;</p>
+<p class="p1">}</p>
+<p class="p1">.about-text h3 em { color: var(--green); font-style: italic; }</p>
+<p class="p1">.about-text p {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.95rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 300;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: rgba(232,234,240,0.6);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.8;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1rem;</p>
+<p class="p1">}</p>
+<p class="p1">.detail-cards { display: flex; flex-direction: column; gap: 1rem; }</p>
+<p class="p1">.d-card {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--card);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-left: 3px solid var(--green);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 1.2rem 1.4rem;</p>
+<p class="p1">}</p>
+<p class="p1">.d-card:nth-child(2) { border-left-color: var(--amber); }</p>
+<p class="p1">.d-card:nth-child(3) { border-left-color: var(--indigo); }</p>
+<p class="p1">.d-label {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 9px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.15em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 0.3rem;</p>
+<p class="p1">}</p>
+<p class="p1">.d-value {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Syne', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.95rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 600;</p>
+<p class="p1">}</p>
+<p class="p1">.d-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── CONTACT ── */</p>
+<p class="p1">.contact-box {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--card);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 3rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns: 1fr 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 3rem;</p>
+<p class="p1">}</p>
+<p class="p1">.contact-left h3 {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Syne', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 1.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-weight: 800;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: -0.03em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.2;</p>
+<p class="p1">}</p>
+<p class="p1">.contact-left h3 span { color: var(--green); }</p>
+<p class="p1">.contact-left &gt; p {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>line-height: 1.7;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 1.8rem;</p>
+<p class="p1">}</p>
+<p class="p1">.c-links { display: flex; flex-direction: column; gap: 0.7rem; }</p>
+<p class="p1">.c-link {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>gap: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.85rem 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(255,255,255,0.02);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: border-color 0.25s, background 0.25s, transform 0.2s;</p>
+<p class="p1">}</p>
+<p class="p1">.c-link:hover {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-color: rgba(110,231,183,0.35);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(110,231,183,0.04);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transform: translateX(4px);</p>
+<p class="p1">}</p>
+<p class="p1">.c-icon {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width: 34px; height: 34px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex; align-items: center; justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex-shrink: 0;</p>
+<p class="p1">}</p>
+<p class="p1">.ci-email<span class="Apple-converted-space">    </span>{ background: rgba(110,231,183,0.1); }</p>
+<p class="p1">.ci-phone<span class="Apple-converted-space">    </span>{ background: rgba(245,158,11,0.1); }</p>
+<p class="p1">.ci-github <span class="Apple-converted-space">  </span>{ background: rgba(255,255,255,0.06); font-family:monospace; font-size:11px; color:var(--muted); }</p>
+<p class="p1">.ci-linkedin { background: rgba(10,102,194,0.15); font-family:sans-serif; font-size:11px; font-weight:700; color:#0a66c2; }</p>
+<p class="p1">.c-text { flex: 1; }</p>
+<p class="p1">.c-label {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 9px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.12em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom: 2px;</p>
+<p class="p1">}</p>
+<p class="p1">.c-value { font-size: 0.88rem; color: var(--text); }</p>
+<p class="p1">.c-arrow { color: var(--muted); font-size: 12px; transition: transform 0.2s, color 0.2s; }</p>
+<p class="p1">.c-link:hover .c-arrow { transform: translateX(3px); color: var(--green); }</p>
+<p class="p2"><br></p>
+<p class="p1">/* form */</p>
+<p class="p1">.contact-form { display: flex; flex-direction: column; gap: 0.9rem; }</p>
+<p class="p1">.f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }</p>
+<p class="p1">.f-group { display: flex; flex-direction: column; gap: 0.35rem; }</p>
+<p class="p1">.f-group label {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 9px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.12em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1">}</p>
+<p class="p1">.f-group input,</p>
+<p class="p1">.f-group textarea {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: rgba(255,255,255,0.03);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.75rem 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'Epilogue', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>outline: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: border-color 0.2s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>resize: none;</p>
+<p class="p1">}</p>
+<p class="p1">.f-group input:focus,</p>
+<p class="p1">.f-group textarea:focus { border-color: rgba(110,231,183,0.45); }</p>
+<p class="p1">.f-group input::placeholder,</p>
+<p class="p1">.f-group textarea::placeholder { color: rgba(107,114,128,0.45); font-style: italic; }</p>
+<p class="p1">.f-submit {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-self: flex-start;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-top: 0.3rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 11px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.06em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background: var(--green);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--bg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 0.85rem 1.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: opacity 0.2s, transform 0.2s;</p>
+<p class="p1">}</p>
+<p class="p1">.f-submit:hover { opacity: 0.85; transform: translateY(-2px); }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── FOOTER ── */</p>
+<p class="p1">footer {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-top: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding: 2rem 3rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>max-width: 1100px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin: 0 auto;</p>
+<p class="p1">}</p>
+<p class="p1">footer p {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.08em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1">}</p>
+<p class="p1">footer p span { color: var(--green); }</p>
+<p class="p1">.f-links { display: flex; gap: 2rem; }</p>
+<p class="p1">.f-links a {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family: 'JetBrains Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing: 0.08em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-decoration: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition: color 0.2s;</p>
+<p class="p1">}</p>
+<p class="p1">.f-links a:hover { color: var(--text); }</p>
+<p class="p2"><br></p>
+<p class="p1">/* ── RESPONSIVE ── */</p>
+<p class="p1">@media (max-width: 860px) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>nav { padding: 1rem 1.5rem; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav-links { display: none; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.hero { padding: 6rem 1.5rem 3rem; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.section { padding: 4rem 1.5rem; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.projects-grid { grid-template-columns: 1fr; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.about-grid { grid-template-columns: 1fr; gap: 2.5rem; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.contact-box { grid-template-columns: 1fr; padding: 1.5rem; gap: 2rem; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.f-row { grid-template-columns: 1fr; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>footer { flex-direction: column; gap: 1rem; text-align: center; }</p>
+<p class="p1">}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- NAV --&gt;</p>
+<p class="p1">&lt;nav&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;a href="#" class="logo"&gt;atharva&lt;span&gt;.&lt;/span&gt;dev&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;ul class="nav-links"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;li&gt;&lt;a href="#projects"&gt;Projects&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;li&gt;&lt;a href="#about"&gt;About&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;li&gt;&lt;a href="#contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/ul&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;a href="#contact" class="nav-btn"&gt;Say Hello →&lt;/a&gt;</p>
+<p class="p1">&lt;/nav&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- HERO --&gt;</p>
+<p class="p1">&lt;div class="hero"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="hero-glow"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="hero-content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="hero-badge"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="badge-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Open to collaborations &amp;amp; learning</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1 class="hero-name"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>Atharva</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;span class="outline"&gt;Jibhakate.&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="hero-role"&gt;CS Student @ SIT Nagpur &amp;nbsp;/&amp;nbsp; &lt;em&gt;1st Year&lt;/em&gt; &amp;nbsp;/&amp;nbsp; Aspiring Developer&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="hero-bio"&gt;I'm a first-year Computer Science student who loves building things from scratch. I enjoy turning ideas into working projects using Python, HTML, CSS, and JavaScript — always learning, always shipping.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="hero-btns"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;a href="#projects" class="btn-solid"&gt;View My Work&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;a href="#contact" class="btn-outline"&gt;Let's Talk&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- SKILLS MARQUEE --&gt;</p>
+<p class="p1">&lt;div class="marquee-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="marquee-track"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:var(--green)"&gt;&lt;/div&gt;Python&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:var(--amber)"&gt;&lt;/div&gt;HTML&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:var(--indigo)"&gt;&lt;/div&gt;CSS&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:#f87171"&gt;&lt;/div&gt;JavaScript&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:var(--green)"&gt;&lt;/div&gt;Git&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:var(--amber)"&gt;&lt;/div&gt;VS Code&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:var(--green)"&gt;&lt;/div&gt;Python&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:var(--amber)"&gt;&lt;/div&gt;HTML&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:var(--indigo)"&gt;&lt;/div&gt;CSS&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:#f87171"&gt;&lt;/div&gt;JavaScript&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:var(--green)"&gt;&lt;/div&gt;Git&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="skill-item"&gt;&lt;div class="skill-dot" style="background:var(--amber)"&gt;&lt;/div&gt;VS Code&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- ══════════════ PROJECTS ══════════════ --&gt;</p>
+<p class="p1">&lt;section class="section" id="projects"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="section-head"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="sec-num"&gt;01&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 class="sec-title"&gt;Projects&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sec-line"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="projects-grid"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 1 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;article class="p-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-visual v1"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="mock-browser"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="mock-bar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mock-dot"&gt;&lt;/div&gt;&lt;div class="mock-dot"&gt;&lt;/div&gt;&lt;div class="mock-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mock-url"&gt;weather-app.html&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="mock-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml green"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml short"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml med"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml short"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h3 class="p-name"&gt;Weather App&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="p-links"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#" class="p-link"&gt;GH&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#" class="p-link"&gt;↗&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="p-desc"&gt;A weather app that fetches live data from a public API and shows the current temperature, humidity, and condition for any city. Built to practice JavaScript fetch() and DOM manipulation.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-tags"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="tag a"&gt;HTML&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="tag i"&gt;CSS&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="tag g"&gt;JavaScript&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/article&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 2 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;article class="p-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-visual v2"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="mock-term"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="mock-bar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mock-dot"&gt;&lt;/div&gt;&lt;div class="mock-dot"&gt;&lt;/div&gt;&lt;div class="mock-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="term-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tl"&gt;&lt;span class="p"&gt;$ &lt;/span&gt;&lt;span class="c"&gt;python quiz.py&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tl"&gt;&lt;span class="o"&gt;Q1: Capital of India?&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tl"&gt;&lt;span class="o"&gt;&amp;gt; New Delhi&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tl"&gt;&lt;span class="o"&gt;Correct! Score: 1/1&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tl"&gt;&lt;span class="p"&gt;$ &lt;/span&gt;&lt;span class="blink"&gt;&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h3 class="p-name"&gt;Python Quiz Game&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="p-links"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#" class="p-link"&gt;GH&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="p-desc"&gt;A terminal quiz game in Python that asks multiple-choice questions, tracks your score, and shows a result summary at the end. Great practice for loops, functions, and user input.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-tags"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="tag g"&gt;Python&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/article&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 3 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;article class="p-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-visual v3"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="mock-browser"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="mock-bar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mock-dot"&gt;&lt;/div&gt;&lt;div class="mock-dot"&gt;&lt;/div&gt;&lt;div class="mock-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mock-url"&gt;todo-list.html&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="mock-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml green"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml med"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml short"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml med"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h3 class="p-name"&gt;To-Do List&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="p-links"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#" class="p-link"&gt;GH&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#" class="p-link"&gt;↗&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="p-desc"&gt;A clean to-do list web app where you can add, complete, and delete tasks. Tasks persist on refresh using localStorage. My first project combining HTML, CSS, and JavaScript together.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-tags"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="tag a"&gt;HTML&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="tag i"&gt;CSS&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="tag g"&gt;JavaScript&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/article&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 4 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;article class="p-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-visual v4"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="mock-term"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="mock-bar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mock-dot"&gt;&lt;/div&gt;&lt;div class="mock-dot"&gt;&lt;/div&gt;&lt;div class="mock-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="term-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tl"&gt;&lt;span class="p"&gt;$ &lt;/span&gt;&lt;span class="c"&gt;python calc.py&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tl"&gt;&lt;span class="o"&gt;Enter: 25 + 17&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tl"&gt;&lt;span class="o"&gt;Result: 42&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tl"&gt;&lt;span class="o"&gt;Enter: 100 / 4&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="tl"&gt;&lt;span class="o"&gt;Result: 25.0&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h3 class="p-name"&gt;Python Calculator&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="p-links"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#" class="p-link"&gt;GH&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="p-desc"&gt;A command-line calculator in Python that handles basic operations and edge cases like division by zero. One of my first Python programs — kept simple and clean.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-tags"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="tag g"&gt;Python&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/article&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 5 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;article class="p-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-visual v5"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="mock-browser"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="mock-bar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mock-dot"&gt;&lt;/div&gt;&lt;div class="mock-dot"&gt;&lt;/div&gt;&lt;div class="mock-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="mock-url"&gt;atharva.dev&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="mock-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml green"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml short"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml med"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="ml" style="width:40%"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="p-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;h3 class="p-name"&gt;This Portfolio&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="p-links"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#" class="p-link"&gt;GH&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;a href="#" class="p-link"&gt;↗&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="p-desc"&gt;My personal portfolio — the one you're looking at right now. Designed and built from scratch using only HTML and CSS. A project I'm proud of as someone just starting out.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="p-tags"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="tag a"&gt;HTML&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="tag i"&gt;CSS&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/article&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- ══════════════ ABOUT ══════════════ --&gt;</p>
+<p class="p1">&lt;section class="section" id="about" style="padding-top:0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="section-head"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="sec-num"&gt;02&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 class="sec-title"&gt;About Me&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sec-line"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="about-grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="about-text"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h3&gt;Learning, building, and &lt;em&gt;growing&lt;/em&gt; — one project at a time.&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;I'm a first-year Computer Science student at SIT Nagpur. I started coding out of curiosity and quickly fell in love with seeing ideas come to life in the browser.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;I enjoy building small, useful web projects and writing Python scripts that solve everyday problems. I'm still early in my journey but committed to improving every day.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;Outside of coding, I enjoy cricket, exploring tech blogs, and occasionally getting lost in a good puzzle.&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="detail-cards"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="d-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-label"&gt;Education&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-value"&gt;B.Tech Computer Science&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-sub"&gt;SIT Nagpur · 2024 – 2028 · 1st Year&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="d-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-label"&gt;Focus&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-value"&gt;Web Development &amp;amp; Python&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-sub"&gt;Building projects to strengthen fundamentals&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="d-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-label"&gt;Currently&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-value"&gt;Open to Collaborations &amp;amp; Projects&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="d-sub"&gt;Looking to contribute, learn, and grow&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- ══════════════ CONTACT ══════════════ --&gt;</p>
+<p class="p1">&lt;section class="section" id="contact" style="padding-top:0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="section-head"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="sec-num"&gt;03&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 class="sec-title"&gt;Get in Touch&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sec-line"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="contact-box"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="contact-left"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;h3&gt;Let's build something &lt;span&gt;great&lt;/span&gt; together.&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;p&gt;Whether it's a collaboration, a project idea, or just a chat about tech — I'm always happy to connect.&lt;/p&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="c-links"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="mailto:atharvajibhakate45@gmail.com" class="c-link"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="c-icon ci-email"&gt;📧&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="c-text"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="c-label"&gt;Email&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="c-value"&gt;atharvajibhakate45@gmail.com&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="c-arrow"&gt;→&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="tel:+918149937131" class="c-link"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="c-icon ci-phone"&gt;📞&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="c-text"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="c-label"&gt;Phone&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="c-value"&gt;+91 81499 37131&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="c-arrow"&gt;→&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="https://github.com/atharvajibhakate" class="c-link"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="c-icon ci-github"&gt;GH&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="c-text"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="c-label"&gt;GitHub&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="c-value"&gt;github.com/atharvajibhakate&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="c-arrow"&gt;→&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;a href="https://linkedin.com/in/atharvajibhakate" class="c-link"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="c-icon ci-linkedin"&gt;in&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="c-text"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="c-label"&gt;LinkedIn&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="c-value"&gt;linkedin.com/in/atharvajibhakate&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;span class="c-arrow"&gt;→&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/a&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="contact-form"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="f-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="f-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Your Name&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="text" placeholder="John Doe" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="f-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;label&gt;Your Email&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;input type="email" placeholder="you@example.com" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="f-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;label&gt;Subject&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;input type="text" placeholder="What's this about?" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="f-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;label&gt;Message&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;textarea rows="5" placeholder="Tell me what you have in mind..."&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="f-submit"&gt;Send Message →&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/section&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;!-- FOOTER --&gt;</p>
+<p class="p1">&lt;footer&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;p&gt;Designed &amp;amp; built by &lt;span&gt;Atharva Jibhakate&lt;/span&gt; · 2025&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="f-links"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;a href="#projects"&gt;Projects&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;a href="#about"&gt;About&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;a href="#contact"&gt;Contact&lt;/a&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/footer&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
