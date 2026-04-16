@@ -1,0 +1,855 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.5">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1">&lt;title&gt;Exam Score Tracker&lt;/title&gt;</p>
+<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&amp;family=DM+Mono:wght@300;400;500&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>:root {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--bg: #0d0f14;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--surface: #13161e;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--surface2: #1a1e29;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--border: #252a38;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--accent: #f0c040;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--accent2: #e07060;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--accent3: #60b8e0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--text: #e8e4d8;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--muted: #6b7280;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--green: #5ec98e;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>* { margin: 0; padding: 0; box-sizing: border-box; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--bg);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Sans', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>min-height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 2rem 1rem 4rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Background texture */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>body::before {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>content: '';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>position: fixed;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>inset: 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background:</p>
+<p class="p1"><span class="Apple-converted-space">      </span>radial-gradient(ellipse 80% 60% at 20% 10%, rgba(240,192,64,0.04) 0%, transparent 60%),</p>
+<p class="p1"><span class="Apple-converted-space">      </span>radial-gradient(ellipse 60% 50% at 80% 80%, rgba(96,184,224,0.04) 0%, transparent 60%);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>z-index: 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.container {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>max-width: 960px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin: 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>z-index: 1;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Header */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>header {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 3rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding-top: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.eyebrow {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>letter-spacing: 0.25em;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--accent);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>opacity: 0.9;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>h1 {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'Playfair Display', serif;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: clamp(2.4rem, 6vw, 4rem);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-weight: 900;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>line-height: 1.05;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>letter-spacing: -0.02em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>h1 span {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--accent);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-style: italic;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.subtitle {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-top: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-weight: 300;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Input Section */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.input-card {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 1.75rem 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>align-items: flex-end;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex-wrap: wrap;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.field {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>min-width: 180px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>label {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.68rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>letter-spacing: 0.12em;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>input[type="number"], input[type="text"] {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface2);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 0.75rem 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>outline: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: border-color 0.2s, box-shadow 0.2s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>input[type="number"]:focus, input[type="text"]:focus {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-color: var(--accent);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>box-shadow: 0 0 0 3px rgba(240,192,64,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.btn {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 0.75rem 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Sans', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-weight: 500;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: all 0.2s;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>white-space: nowrap;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.btn-primary {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--accent);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: #0d0f14;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.btn-primary:hover { background: #f5cc55; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(240,192,64,0.3); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.btn-primary:active { transform: translateY(0); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.btn-secondary {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.btn-secondary:hover { border-color: var(--accent2); color: var(--accent2); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.btn-bulk {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface2);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--accent3);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.btn-bulk:hover { border-color: var(--accent3); background: rgba(96,184,224,0.05); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Bulk Input area */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.bulk-area {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 1.5rem 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>animation: slideDown 0.2s ease;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.bulk-area.open { display: block; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>@keyframes slideDown { from { opacity:0; transform: translateY(-8px); } to { opacity:1; transform: translateY(0); } }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.bulk-area textarea {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface2);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 0.75rem 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.9rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>resize: vertical;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>min-height: 80px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>outline: none;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin: 0.5rem 0 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.bulk-area textarea:focus { border-color: var(--accent3); box-shadow: 0 0 0 3px rgba(96,184,224,0.1); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Stats Row */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stats-row {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 1.25rem 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>position: relative;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: transform 0.2s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card:hover { transform: translateY(-2px); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card::before {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>content: '';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>top: 0; left: 0; right: 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>height: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 14px 14px 0 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card.total::before { background: var(--accent); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card.min-card::before { background: var(--accent2); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card.max-card::before { background: var(--green); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card.mode-card::before { background: var(--accent3); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card.avg-card::before { background: #b070e0; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-label {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.62rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>letter-spacing: 0.15em;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-value {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'Playfair Display', serif;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 2.2rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>line-height: 1;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card.total .stat-value { color: var(--accent); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card.min-card .stat-value { color: var(--accent2); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card.max-card .stat-value { color: var(--green); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card.mode-card .stat-value { color: var(--accent3); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card.avg-card .stat-value { color: #b070e0; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-sub {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-top: 0.25rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Main grid */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.main-grid {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>grid-template-columns: 1fr 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>@media (max-width: 680px) { .main-grid { grid-template-columns: 1fr; } }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.panel {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.panel-title {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.65rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>letter-spacing: 0.18em;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-transform: uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 1.25rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.panel-title::after {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>content: '';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>height: 1px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Frequency Chart */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#freq-chart {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>max-height: 340px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>overflow-y: auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>scrollbar-width: thin;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>scrollbar-color: var(--border) transparent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.freq-row {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>animation: fadeIn 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>@keyframes fadeIn { from { opacity:0; transform: translateX(-6px); } to { opacity:1; transform: translateX(0); } }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.freq-score {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>width: 32px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-align: right;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex-shrink: 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.freq-bar-wrap {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface2);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>height: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.freq-bar {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: linear-gradient(90deg, var(--accent), #f5cc55);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>min-width: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.freq-bar.is-mode {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: linear-gradient(90deg, var(--accent3), #80d0f0);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.freq-count {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>width: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex-shrink: 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Score list */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#score-list {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex-wrap: wrap;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 0.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>max-height: 340px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>overflow-y: auto;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>align-content: flex-start;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>scrollbar-width: thin;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>scrollbar-color: var(--border) transparent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.score-tag {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface2);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 0.3rem 0.65rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.82rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 0.4rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>animation: popIn 0.25s cubic-bezier(0.34,1.56,0.64,1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: border-color 0.2s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>@keyframes popIn { from { opacity:0; transform: scale(0.7); } to { opacity:1; transform: scale(1); } }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.score-tag:hover { border-color: var(--accent2); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.score-tag .remove {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.7rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>line-height: 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: color 0.15s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.score-tag .remove:hover { color: var(--accent2); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.score-tag.is-mode { border-color: rgba(96,184,224,0.4); color: var(--accent3); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.score-tag.is-max { border-color: rgba(94,201,142,0.4); color: var(--green); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.score-tag.is-min { border-color: rgba(224,112,96,0.4); color: var(--accent2); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Distribution viz */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.dist-panel {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>grid-column: 1 / -1;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>#dist-chart {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>align-items: flex-end;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 3px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>height: 100px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 0 0.25rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.dist-col {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cursor: default;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.dist-bar {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 3px 3px 0 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: linear-gradient(180deg, var(--accent) 0%, rgba(240,192,64,0.3) 100%);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: height 0.4s cubic-bezier(0.34,1.56,0.64,1), background 0.3s;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>min-height: 4px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.dist-bar.is-mode {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: linear-gradient(180deg, var(--accent3) 0%, rgba(96,184,224,0.3) 100%);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.dist-label {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.55rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>white-space: nowrap;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Grade bands */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grade-row {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>grid-template-columns: repeat(5, 1fr);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-top: 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grade-card {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface2);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grade-letter {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'Playfair Display', serif;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 1.4rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-weight: 700;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 0.2rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grade-A .grade-letter { color: var(--green); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grade-B .grade-letter { color: var(--accent3); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grade-C .grade-letter { color: var(--accent); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grade-D .grade-letter { color: #e0a040; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grade-F .grade-letter { color: var(--accent2); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grade-count {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 1.1rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-weight: 500;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.grade-range {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.6rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-top: 0.2rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Empty state */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.empty {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 3rem 1rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.empty-icon {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 2.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>margin-bottom: 0.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>opacity: 0.4;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.empty p {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.85rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>line-height: 1.6;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Toast */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>#toast {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>position: fixed;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>bottom: 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>left: 50%;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transform: translateX(-50%) translateY(80px);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface2);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 0.65rem 1.25rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 0.8rem;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--accent2);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>z-index: 999;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>pointer-events: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>#toast.show { transform: translateX(-50%) translateY(0); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Scrollbars */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>::-webkit-scrollbar { width: 4px; height: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>::-webkit-scrollbar-track { background: transparent; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;header&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="eyebrow"&gt;Data Structures · Array-based Frequency Analysis&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;Exam Score &lt;span&gt;Tracker&lt;/span&gt;&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="subtitle"&gt;Linear traversal · Min / Max / Mode · Dynamic updates&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/header&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Input --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="input-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="field"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;Score (0–100)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input type="number" id="score-input" min="0" max="100" placeholder="e.g. 85" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="field" style="max-width:180px"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;Student Name (optional)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input type="text" id="name-input" placeholder="e.g. Riya" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn btn-primary" onclick="addScore()"&gt;Add Score&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn btn-bulk" onclick="toggleBulk()"&gt;Bulk Add&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn btn-secondary" onclick="clearAll()"&gt;Clear All&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Bulk input --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="bulk-area" id="bulk-area"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;label&gt;Paste comma-separated scores (e.g., 85, 92, 78, 65, 88)&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;textarea id="bulk-input" placeholder="85, 92, 78, 65, 88, 91, 73, 60, 95, 82"&gt;&lt;/textarea&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn btn-bulk" onclick="addBulk()"&gt;Add All Scores&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Stats --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="stats-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stat-card total"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-label"&gt;Total Scores&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-value" id="stat-total"&gt;0&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-sub"&gt;entries recorded&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stat-card min-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-label"&gt;Minimum&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-value" id="stat-min"&gt;—&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-sub"&gt;lowest score&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stat-card max-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-label"&gt;Maximum&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-value" id="stat-max"&gt;—&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-sub"&gt;highest score&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stat-card mode-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-label"&gt;Mode&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-value" id="stat-mode"&gt;—&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-sub"&gt;most frequent&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stat-card avg-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-label"&gt;Average&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-value" id="stat-avg"&gt;—&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-sub"&gt;mean score&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Charts --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="main-grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Frequency bars --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="panel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="panel-title"&gt;Frequency Count&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="freq-chart"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="empty"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="empty-icon"&gt;📊&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p&gt;Add scores to see&lt;br&gt;frequency distribution&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Score tags --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="panel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="panel-title"&gt;Score Log&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="score-list"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="empty"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="empty-icon"&gt;📝&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p&gt;Scores will appear here&lt;br&gt;as you add them&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Distribution full width --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="panel dist-panel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="panel-title"&gt;Score Distribution (0–100)&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="dist-chart"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="margin-top:1.5rem"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="panel-title"&gt;Grade Breakdown&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="grade-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="grade-card grade-A"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-letter"&gt;A&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-count" id="grade-a"&gt;0&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-range"&gt;90–100&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="grade-card grade-B"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-letter"&gt;B&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-count" id="grade-b"&gt;0&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-range"&gt;80–89&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="grade-card grade-C"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-letter"&gt;C&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-count" id="grade-c"&gt;0&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-range"&gt;70–79&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="grade-card grade-D"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-letter"&gt;D&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-count" id="grade-d"&gt;0&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-range"&gt;60–69&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="grade-card grade-F"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-letter"&gt;F&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-count" id="grade-f"&gt;0&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="grade-range"&gt;0–59&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div id="toast"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// ─── Data structures ───────────────────────────────────────────</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Array-based frequency array (indices 0-100)</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const freq = new Array(101).fill(0);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Actual score log with names</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const scoreLog = [];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// ─── Core logic (linear traversal) ──────────────────────────────</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function computeStats() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let total = 0, minVal = Infinity, maxVal = -Infinity;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let modeVal = -1, modeCount = 0, sum = 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Single linear traversal of freq array</p>
+<p class="p1"><span class="Apple-converted-space">    </span>for (let i = 0; i &lt;= 100; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (freq[i] &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>total += freq[i];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>sum += freq[i] * i;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (i &lt; minVal) minVal = i;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (i &gt; maxVal) maxVal = i;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (freq[i] &gt; modeCount) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>modeCount = freq[i];</p>
+<p class="p1"><span class="Apple-converted-space">          </span>modeVal = i;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>return {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>total,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>min: total ? minVal : null,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>max: total ? maxVal : null,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>mode: total ? modeVal : null,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>modeCount,</p>
+<p class="p1"><span class="Apple-converted-space">      </span>avg: total ? (sum / total).toFixed(1) : null</p>
+<p class="p1"><span class="Apple-converted-space">    </span>};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// ─── UI Update ──────────────────────────────────────────────────</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function render() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const stats = computeStats();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Stats</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('stat-total').textContent = stats.total || '0';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('stat-min').textContent <span class="Apple-converted-space">  </span>= stats.min<span class="Apple-converted-space">  </span>?? '—';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('stat-max').textContent <span class="Apple-converted-space">  </span>= stats.max<span class="Apple-converted-space">  </span>?? '—';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('stat-mode').textContent<span class="Apple-converted-space">  </span>= stats.mode ?? '—';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('stat-avg').textContent <span class="Apple-converted-space">  </span>= stats.avg<span class="Apple-converted-space">  </span>?? '—';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Frequency chart</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const freqEl = document.getElementById('freq-chart');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const occupied = [];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>for (let i = 0; i &lt;= 100; i++) if (freq[i] &gt; 0) occupied.push(i);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!occupied.length) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>freqEl.innerHTML = `&lt;div class="empty"&gt;&lt;div class="empty-icon"&gt;📊&lt;/div&gt;&lt;p&gt;Add scores to see&lt;br&gt;frequency distribution&lt;/p&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const maxFreq = Math.max(...occupied.map(s =&gt; freq[s]));</p>
+<p class="p1"><span class="Apple-converted-space">      </span>freqEl.innerHTML = occupied.map(s =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const pct = Math.round((freq[s] / maxFreq) * 100);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const isMode = s === stats.mode;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return `</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="freq-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="freq-score"&gt;${s}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="freq-bar-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;div class="freq-bar ${isMode ? 'is-mode' : ''}" style="width:${pct}%"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="freq-count"&gt;×${freq[s]}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}).join('');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Score log</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const listEl = document.getElementById('score-list');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!scoreLog.length) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>listEl.innerHTML = `&lt;div class="empty"&gt;&lt;div class="empty-icon"&gt;📝&lt;/div&gt;&lt;p&gt;Scores will appear here&lt;br&gt;as you add them&lt;/p&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>listEl.innerHTML = scoreLog.map((entry, idx) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let cls = '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>if (entry.score === stats.mode &amp;&amp; freq[entry.score] === stats.modeCount) cls = 'is-mode';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>else if (entry.score === stats.max) cls = 'is-max';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>else if (entry.score === stats.min) cls = 'is-min';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>return `</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="score-tag ${cls}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>${entry.name ? `&lt;span style="color:var(--muted);font-size:0.7rem"&gt;${entry.name}:&lt;/span&gt;` : ''}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span&gt;${entry.score}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="remove" onclick="removeScore(${idx})"&gt;✕&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}).join('');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Distribution chart (grouped by 5s)</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const distEl = document.getElementById('dist-chart');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const buckets = [];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>for (let b = 0; b &lt;= 95; b += 5) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let count = 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>for (let i = b; i &lt; b + 5 &amp;&amp; i &lt;= 100; i++) count += freq[i];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>buckets.push({ label: `${b}`, count });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const maxB = Math.max(...buckets.map(b =&gt; b.count), 1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>distEl.innerHTML = buckets.map(b =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const h = Math.round((b.count / maxB) * 90);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const isModeRange = stats.mode !== null &amp;&amp; parseInt(b.label) &lt;= stats.mode &amp;&amp; stats.mode &lt; parseInt(b.label) + 5;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return `</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="dist-col" title="${b.label}–${parseInt(b.label)+4}: ${b.count} score(s)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="dist-bar ${isModeRange ? 'is-mode' : ''}" style="height:${h}px"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="dist-label"&gt;${b.label}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}).join('');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Grade breakdown</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let gA=0, gB=0, gC=0, gD=0, gF=0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>for (let i = 0; i &lt;= 100; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if (i &gt;= 90) gA += freq[i];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>else if (i &gt;= 80) gB += freq[i];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>else if (i &gt;= 70) gC += freq[i];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>else if (i &gt;= 60) gD += freq[i];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>else gF += freq[i];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('grade-a').textContent = gA;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('grade-b').textContent = gB;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('grade-c').textContent = gC;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('grade-d').textContent = gD;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('grade-f').textContent = gF;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// ─── Actions ────────────────────────────────────────────────────</p>
+<p class="p1"><span class="Apple-converted-space">  </span>function addScore() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const input = document.getElementById('score-input');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const nameInput = document.getElementById('name-input');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const val = parseInt(input.value);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (isNaN(val) || val &lt; 0 || val &gt; 100) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>showToast('Please enter a valid score between 0 and 100');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>input.focus();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>freq[val]++;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>scoreLog.push({ score: val, name: nameInput.value.trim() });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.value = '';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>nameInput.value = '';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>input.focus();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function removeScore(idx) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const entry = scoreLog[idx];</p>
+<p class="p1"><span class="Apple-converted-space">    </span>freq[entry.score]--;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>scoreLog.splice(idx, 1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function clearAll() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!scoreLog.length) return;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>freq.fill(0);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>scoreLog.length = 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>showToast('All scores cleared');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function toggleBulk() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('bulk-area').classList.toggle('open');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function addBulk() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const raw = document.getElementById('bulk-input').value;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const nums = raw.split(/[,\s\n]+/).map(s =&gt; parseInt(s.trim())).filter(n =&gt; !isNaN(n) &amp;&amp; n &gt;= 0 &amp;&amp; n &lt;= 100);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!nums.length) { showToast('No valid scores found (0–100 only)'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>nums.forEach(n =&gt; { freq[n]++; scoreLog.push({ score: n, name: '' }); });</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('bulk-input').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('bulk-area').classList.remove('open');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>showToast(`Added ${nums.length} scores`);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function showToast(msg) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const t = document.getElementById('toast');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>t.textContent = msg;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>t.classList.add('show');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>setTimeout(() =&gt; t.classList.remove('show'), 2500);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Enter key support</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('score-input').addEventListener('keydown', e =&gt; { if (e.key === 'Enter') addScore(); });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('name-input').addEventListener('keydown', e =&gt; { if (e.key === 'Enter') addScore(); });</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// Initial render</p>
+<p class="p1"><span class="Apple-converted-space">  </span>render();</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
