@@ -1,0 +1,685 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.5">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"/&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;</p>
+<p class="p1">&lt;title&gt;PLAYLISTDLL — Doubly Linked Playlist&lt;/title&gt;</p>
+<p class="p1">&lt;link rel="preconnect" href="https://fonts.googleapis.com"/&gt;</p>
+<p class="p1">&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/&gt;</p>
+<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&amp;family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&amp;display=swap" rel="stylesheet"/&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">:root {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--bg: #0a0a0a;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--bg2: #111111;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--bg3: #1a1a1a;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--bg4: #222222;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--accent: #c8f135;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--accent2: #9de624;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--accent-dim: rgba(200,241,53,.12);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--accent-dim2: rgba(200,241,53,.06);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--text: #f0ede8;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--text2: #888880;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--text3: #555550;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--border: rgba(255,255,255,.08);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--border2: rgba(255,255,255,.14);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--purple: #8b5cf6;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--purple-dim: rgba(139,92,246,.15);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--red: #f87171;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--red-dim: rgba(248,113,113,.12);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--radius: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>--radius-lg: 12px;</p>
+<p class="p1">}</p>
+<p class="p1">*{box-sizing:border-box;margin:0;padding:0}</p>
+<p class="p1">html{font-size:16px}</p>
+<p class="p1">body{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:var(--bg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family:'Syne',sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>min-height:100vh;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>overflow-x:hidden;</p>
+<p class="p1">}</p>
+<p class="p1">/* ─── Noise overlay ─── */</p>
+<p class="p1">body::before{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>content:'';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:fixed;inset:0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pointer-events:none;z-index:0;opacity:.6;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ─── Layout ─── */</p>
+<p class="p1">.layout{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns:340px 1fr;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>min-height:100vh;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:relative;z-index:1;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ─── Left sidebar ─── */</p>
+<p class="p1">.sidebar{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-right:1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;flex-direction:column;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:var(--bg2);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:sticky;top:0;height:100vh;overflow-y:auto;</p>
+<p class="p1">}</p>
+<p class="p1">.sidebar::-webkit-scrollbar{width:4px}</p>
+<p class="p1">.sidebar::-webkit-scrollbar-track{background:transparent}</p>
+<p class="p1">.sidebar::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:2px}</p>
+<p class="p2"><br></p>
+<p class="p1">.brand{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:2rem 1.75rem 1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-bottom:1px solid var(--border);</p>
+<p class="p1">}</p>
+<p class="p1">.brand-tag{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size:10px;color:var(--accent);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing:.12em;text-transform:uppercase;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom:.5rem;display:flex;align-items:center;gap:6px;</p>
+<p class="p1">}</p>
+<p class="p1">.brand-tag::before{content:'';width:16px;height:1px;background:var(--accent)}</p>
+<p class="p1">.brand-name{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.1}</p>
+<p class="p1">.brand-name span{color:var(--accent)}</p>
+<p class="p1">.brand-sub{margin-top:.5rem;font-size:12px;color:var(--text2);font-family:'DM Mono',monospace}</p>
+<p class="p2"><br></p>
+<p class="p1">/* now playing */</p>
+<p class="p1">.now-playing-wrap{padding:1.5rem 1.75rem;border-bottom:1px solid var(--border)}</p>
+<p class="p1">.np-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem}</p>
+<p class="p1">.np-card{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:var(--accent-dim);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid rgba(200,241,53,.2);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:var(--radius-lg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:1rem;</p>
+<p class="p1">}</p>
+<p class="p1">.np-disc{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width:48px;height:48px;border-radius:50%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:linear-gradient(135deg,var(--bg3),var(--bg4));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid var(--border2);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;justify-content:center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size:18px;margin-bottom:.75rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>animation:spin 8s linear infinite paused;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:relative;</p>
+<p class="p1">}</p>
+<p class="p1">.np-disc::after{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>content:'';width:10px;height:10px;border-radius:50%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:var(--bg2);border:1px solid var(--border2);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:absolute;</p>
+<p class="p1">}</p>
+<p class="p1">.np-disc.spinning{animation-play-state:running}</p>
+<p class="p1">@keyframes spin{to{transform:rotate(360deg)}}</p>
+<p class="p1">.np-title{font-size:15px;font-weight:700;letter-spacing:-.01em;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</p>
+<p class="p1">.np-artist{font-size:12px;color:var(--text2);font-family:'DM Mono',monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</p>
+<p class="p1">.np-progress{margin-top:.75rem;height:2px;background:var(--border2);border-radius:1px;overflow:hidden}</p>
+<p class="p1">.np-bar{height:100%;background:var(--accent);border-radius:1px;width:0%;transition:width 2s linear}</p>
+<p class="p1">.np-controls{display:flex;gap:6px;margin-top:.75rem;align-items:center}</p>
+<p class="p1">.np-btn{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex:1;padding:7px 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:transparent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid var(--border2);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text);font-size:12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family:'Syne',sans-serif;font-weight:600;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor:pointer;transition:all .2s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;justify-content:center;gap:4px;</p>
+<p class="p1">}</p>
+<p class="p1">.np-btn:hover{background:var(--bg4);border-color:var(--border2)}</p>
+<p class="p1">.np-btn.active{background:var(--accent);border-color:var(--accent);color:#0a0a0a}</p>
+<p class="p2"><br></p>
+<p class="p1">/* stats */</p>
+<p class="p1">.stats-wrap{padding:1.25rem 1.75rem;border-bottom:1px solid var(--border)}</p>
+<p class="p1">.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}</p>
+<p class="p1">.stat{background:var(--bg3);border-radius:var(--radius);padding:.625rem .75rem;border:1px solid var(--border)}</p>
+<p class="p1">.stat-val{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1}</p>
+<p class="p1">.stat-val.accent{color:var(--accent)}</p>
+<p class="p1">.stat-val.purple{color:var(--purple)}</p>
+<p class="p1">.stat-lbl{font-size:10px;font-family:'DM Mono',monospace;color:var(--text3);margin-top:3px;letter-spacing:.05em}</p>
+<p class="p2"><br></p>
+<p class="p1">/* add song */</p>
+<p class="p1">.add-wrap{padding:1.25rem 1.75rem;border-bottom:1px solid var(--border);flex:1}</p>
+<p class="p1">.section-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.75rem}</p>
+<p class="p1">.input-field{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width:100%;background:var(--bg3);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);border-radius:var(--radius);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:9px 12px;color:var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family:'Syne',sans-serif;font-size:14px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>outline:none;transition:border-color .2s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom:8px;</p>
+<p class="p1">}</p>
+<p class="p1">.input-field::placeholder{color:var(--text3)}</p>
+<p class="p1">.input-field:focus{border-color:rgba(200,241,53,.4)}</p>
+<p class="p1">.add-btns{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:4px}</p>
+<p class="p1">.add-btn{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:9px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:none;border-radius:var(--radius);cursor:pointer;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing:.02em;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;</p>
+<p class="p1">}</p>
+<p class="p1">.add-btn.front{background:var(--accent);color:#0a0a0a}</p>
+<p class="p1">.add-btn.front:hover{background:var(--accent2)}</p>
+<p class="p1">.add-btn.end{background:var(--bg4);color:var(--text);border:1px solid var(--border2)}</p>
+<p class="p1">.add-btn.end:hover{background:var(--bg3)}</p>
+<p class="p1">.add-btn:active{transform:scale(.97)}</p>
+<p class="p2"><br></p>
+<p class="p1">/* actions */</p>
+<p class="p1">.actions-wrap{padding:1.25rem 1.75rem}</p>
+<p class="p1">.del-row{display:flex;gap:6px;margin-bottom:8px;align-items:center}</p>
+<p class="p1">.del-input{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width:70px;background:var(--bg3);border:1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);padding:9px 10px;color:var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;font-size:14px;outline:none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition:border-color .2s;text-align:center;</p>
+<p class="p1">}</p>
+<p class="p1">.del-input:focus{border-color:rgba(248,113,113,.4)}</p>
+<p class="p1">.del-input::placeholder{color:var(--text3)}</p>
+<p class="p1">.del-btn{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>flex:1;padding:9px;background:var(--red-dim);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid rgba(248,113,113,.2);border-radius:var(--radius);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color:var(--red);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor:pointer;transition:all .2s;</p>
+<p class="p1">}</p>
+<p class="p1">.del-btn:hover{background:rgba(248,113,113,.2)}</p>
+<p class="p1">.del-btn:active{transform:scale(.97)}</p>
+<p class="p1">.shuffle-btn{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width:100%;padding:10px;background:var(--purple-dim);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid rgba(139,92,246,.3);border-radius:var(--radius);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color:var(--purple);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>letter-spacing:.03em;</p>
+<p class="p1">}</p>
+<p class="p1">.shuffle-btn:hover{background:rgba(139,92,246,.25)}</p>
+<p class="p1">.shuffle-btn.on{background:var(--purple);color:#fff;border-color:var(--purple)}</p>
+<p class="p1">.shuffle-btn:active{transform:scale(.98)}</p>
+<p class="p1">.shuffle-icon{font-size:15px}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ─── Main content ─── */</p>
+<p class="p1">.main{padding:2.5rem 2rem;overflow-y:auto}</p>
+<p class="p1">.main-header{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;align-items:baseline;justify-content:space-between;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-bottom:2rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding-bottom:1.25rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-bottom:1px solid var(--border);</p>
+<p class="p1">}</p>
+<p class="p1">.main-title{font-size:32px;font-weight:800;letter-spacing:-.03em}</p>
+<p class="p1">.main-title span{color:var(--accent)}</p>
+<p class="p1">.main-meta{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3)}</p>
+<p class="p1">.shuffled-badge{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:inline-flex;align-items:center;gap:5px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:var(--purple-dim);border:1px solid rgba(139,92,246,.3);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:20px;padding:4px 10px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size:11px;font-family:'DM Mono',monospace;color:var(--purple);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>margin-left:10px;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ─── Song cards ─── */</p>
+<p class="p1">.songs-list{display:flex;flex-direction:column;gap:0}</p>
+<p class="p1">.song-row{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:grid;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>grid-template-columns:44px 1fr auto;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>align-items:center;gap:12px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>padding:12px 14px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:var(--radius-lg);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border:1px solid transparent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition:all .2s;cursor:pointer;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:relative;</p>
+<p class="p1">}</p>
+<p class="p1">.song-row:hover{background:var(--bg2);border-color:var(--border)}</p>
+<p class="p1">.song-row.playing{background:var(--accent-dim2);border-color:rgba(200,241,53,.15)}</p>
+<p class="p1">.song-num{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width:36px;height:36px;border-radius:50%;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;justify-content:center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;font-size:12px;font-weight:500;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>color:var(--text3);background:var(--bg3);border:1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition:all .2s;flex-shrink:0;</p>
+<p class="p1">}</p>
+<p class="p1">.song-row.playing .song-num{background:var(--accent);border-color:var(--accent);color:#0a0a0a;font-size:14px}</p>
+<p class="p1">.song-body{min-width:0}</p>
+<p class="p1">.song-title{font-size:14px;font-weight:700;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}</p>
+<p class="p1">.song-artist{font-size:12px;color:var(--text2);font-family:'DM Mono',monospace;margin-top:1px}</p>
+<p class="p1">.song-ptrs{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;gap:4px;margin-top:5px;flex-wrap:wrap;</p>
+<p class="p1">}</p>
+<p class="p1">.ptr-tag{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;font-size:9px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:var(--bg4);border:1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:3px;padding:1px 5px;color:var(--text3);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis;</p>
+<p class="p1">}</p>
+<p class="p1">.ptr-tag .arrow{color:var(--text2);margin-right:2px}</p>
+<p class="p1">.ptr-tag.has-link{color:var(--text2)}</p>
+<p class="p1">.song-actions{display:flex;gap:4px;opacity:0;transition:opacity .2s}</p>
+<p class="p1">.song-row:hover .song-actions{opacity:1}</p>
+<p class="p1">.song-row.playing .song-actions{opacity:1}</p>
+<p class="p1">.act-btn{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>width:30px;height:30px;border-radius:var(--radius);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:transparent;border:1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;justify-content:center;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cursor:pointer;transition:all .2s;font-size:12px;color:var(--text2);</p>
+<p class="p1">}</p>
+<p class="p1">.act-btn:hover{background:var(--bg4);color:var(--text)}</p>
+<p class="p1">.act-btn.remove:hover{background:var(--red-dim);border-color:rgba(248,113,113,.2);color:var(--red)}</p>
+<p class="p1">.act-btn:active{transform:scale(.9)}</p>
+<p class="p2"><br></p>
+<p class="p1">/* connector */</p>
+<p class="p1">.dll-connector{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;padding:0 14px;height:20px;gap:6px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;font-size:9px;color:var(--text3);</p>
+<p class="p1">}</p>
+<p class="p1">.dll-line{flex:1;height:1px;border-top:1px dashed rgba(255,255,255,.07)}</p>
+<p class="p2"><br></p>
+<p class="p1">/* empty */</p>
+<p class="p1">.empty-state{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>text-align:center;padding:5rem 2rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size:14px;color:var(--text3);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;</p>
+<p class="p1">}</p>
+<p class="p1">.empty-icon{font-size:40px;margin-bottom:1rem;opacity:.4}</p>
+<p class="p1">.empty-state p{line-height:1.6}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ─── Toast ─── */</p>
+<p class="p1">.toast{</p>
+<p class="p1"><span class="Apple-converted-space">  </span>position:fixed;bottom:1.5rem;right:1.5rem;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>background:var(--bg3);border:1px solid var(--border2);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>border-radius:var(--radius-lg);padding:10px 16px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>font-size:13px;font-weight:600;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transform:translateY(8px);opacity:0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>transition:all .3s cubic-bezier(.34,1.56,.64,1);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pointer-events:none;z-index:100;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;gap:8px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>box-shadow:0 8px 32px rgba(0,0,0,.4);</p>
+<p class="p1">}</p>
+<p class="p1">.toast.show{opacity:1;transform:translateY(0)}</p>
+<p class="p1">.toast-dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}</p>
+<p class="p1">.toast.red .toast-dot{background:var(--red)}</p>
+<p class="p1">.toast.purple .toast-dot{background:var(--purple)}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ─── Responsive ─── */</p>
+<p class="p1">@media(max-width:860px){</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.layout{grid-template-columns:1fr}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.sidebar{position:static;height:auto}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.main{padding:1.5rem 1rem}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* entry animations */</p>
+<p class="p1">@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}</p>
+<p class="p1">.song-row{animation:fadeUp .25s ease both}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="layout"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- ─── SIDEBAR ─── --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;aside class="sidebar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="brand"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="brand-tag"&gt;v1.0 / doubly linked&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="brand-name"&gt;PLAY&lt;span&gt;LIST&lt;/span&gt;&lt;br&gt;DLL&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="brand-sub"&gt;// node.prev ← ● → node.next&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Now Playing --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="now-playing-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="np-label"&gt;Now playing&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="np-card" id="np-card"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="np-disc" id="np-disc"&gt;♪&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="np-title" id="np-title"&gt;—&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="np-artist" id="np-artist"&gt;—&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="np-progress"&gt;&lt;div class="np-bar" id="np-bar"&gt;&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="np-controls"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="np-btn" id="btn-prev" onclick="playPrev()"&gt;◀ Prev&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="np-btn" id="btn-play" onclick="togglePlay()"&gt;▶ Play&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="np-btn" id="btn-next" onclick="playNext()"&gt;Next ▶&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Stats --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="stats-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stats-grid"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat"&gt;&lt;div class="stat-val accent" id="stat-count"&gt;0&lt;/div&gt;&lt;div class="stat-lbl"&gt;songs&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat"&gt;&lt;div class="stat-val" id="stat-pos"&gt;—&lt;/div&gt;&lt;div class="stat-lbl"&gt;playing&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat"&gt;&lt;div class="stat-val purple" id="stat-mode"&gt;OFF&lt;/div&gt;&lt;div class="stat-lbl"&gt;shuffled&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Add song --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="add-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="section-label"&gt;Add song&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input class="input-field" id="inp-title" type="text" placeholder="Song title" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;input class="input-field" id="inp-artist" type="text" placeholder="Artist name" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="add-btns"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="add-btn front" onclick="addSong('front')"&gt;↑ Front&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="add-btn end" onclick="addSong('end')"&gt;↓ End&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Actions --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="actions-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="section-label"&gt;Manage&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="del-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;input class="del-input" id="del-pos" type="number" min="1" placeholder="#" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="del-btn" onclick="deleteByPos()"&gt;✕ Delete at position&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="shuffle-btn" id="shuffle-btn" onclick="reverseShuffle()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="shuffle-icon"&gt;⇅&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span id="shuffle-text"&gt;Reverse shuffle&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/aside&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- ─── MAIN ─── --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;main class="main"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="main-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="main-title"&gt;Your &lt;span&gt;Queue&lt;/span&gt;&lt;span id="shuffled-badge" style="display:none" class="shuffled-badge"&gt;⇅ shuffled&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="main-meta" id="main-meta"&gt;0 songs · DLL&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="songs-list" id="songs-list"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/main&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="toast" id="toast"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;span class="toast-dot"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;span id="toast-msg"&gt;&lt;/span&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">/* ═══════════════════════════════════════════</p>
+<p class="p1"><span class="Apple-converted-space">   </span>DOUBLY LINKED LIST IMPLEMENTATION</p>
+<p class="p1">═══════════════════════════════════════════ */</p>
+<p class="p1">class Node {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>constructor(title, artist, id) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>this.title<span class="Apple-converted-space">  </span>= title;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>this.artist = artist;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>this.id <span class="Apple-converted-space">    </span>= id;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>this.prev <span class="Apple-converted-space">  </span>= null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>this.next <span class="Apple-converted-space">  </span>= null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">class DoublyLinkedList {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>constructor() { this.head = null; this.tail = null; this.size = 0; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>addFront(title, artist, id) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const n = new Node(title, artist, id);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!this.head) { this.head = this.tail = n; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>else { n.next = this.head; this.head.prev = n; this.head = n; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>this.size++;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>addEnd(title, artist, id) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const n = new Node(title, artist, id);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (!this.tail) { this.head = this.tail = n; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>else { n.prev = this.tail; this.tail.next = n; this.tail = n; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>this.size++;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>deleteAt(pos) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (pos &lt; 1 || pos &gt; this.size) return null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let cur = this.head;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>for (let i = 1; i &lt; pos; i++) cur = cur.next;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (cur.prev) cur.prev.next = cur.next; else this.head = cur.next;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (cur.next) cur.next.prev = cur.prev; else this.tail = cur.prev;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>this.size--;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return cur;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>deleteById(id) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let cur = this.head; let pos = 1;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>while (cur) { if (cur.id === id) return this.deleteAt(pos); cur = cur.next; pos++; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>reverse() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let cur = this.head, tmp = null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>while (cur) { tmp = cur.prev; cur.prev = cur.next; cur.next = tmp; cur = cur.prev; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (tmp) this.head = tmp.prev;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>[this.head, this.tail] = [this.tail, this.head];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>toArray() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const arr = []; let cur = this.head;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>while (cur) { arr.push(cur); cur = cur.next; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return arr;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>getById(id) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let cur = this.head;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>while (cur) { if (cur.id === id) return cur; cur = cur.next; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══════════════════════════════════════════</p>
+<p class="p1"><span class="Apple-converted-space">   </span>APP STATE</p>
+<p class="p1">═══════════════════════════════════════════ */</p>
+<p class="p1">const dll = new DoublyLinkedList();</p>
+<p class="p1">let idCtr = 1;</p>
+<p class="p1">let playingId = null;</p>
+<p class="p1">let shuffled<span class="Apple-converted-space">  </span>= false;</p>
+<p class="p1">let isPlaying = false;</p>
+<p class="p1">let progressTimer = null;</p>
+<p class="p1">let progressVal = 0;</p>
+<p class="p2"><br></p>
+<p class="p1">const preloaded = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>["Blinding Lights","The Weeknd"],</p>
+<p class="p1"><span class="Apple-converted-space">  </span>["As It Was","Harry Styles"],</p>
+<p class="p1"><span class="Apple-converted-space">  </span>["Heat Waves","Glass Animals"],</p>
+<p class="p1"><span class="Apple-converted-space">  </span>["Levitating","Dua Lipa"],</p>
+<p class="p1"><span class="Apple-converted-space">  </span>["Stay","The Kid LAROI &amp; Justin Bieber"],</p>
+<p class="p1"><span class="Apple-converted-space">  </span>["Bad Habits","Ed Sheeran"],</p>
+<p class="p1"><span class="Apple-converted-space">  </span>["Peaches","Justin Bieber"],</p>
+<p class="p1">];</p>
+<p class="p1">preloaded.forEach(([t,a]) =&gt; dll.addEnd(t, a, idCtr++));</p>
+<p class="p1">playingId = dll.head ? dll.head.id : null;</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══════════════════════════════════════════</p>
+<p class="p1"><span class="Apple-converted-space">   </span>PLAYBACK SIMULATION</p>
+<p class="p1">═══════════════════════════════════════════ */</p>
+<p class="p1">function togglePlay() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>isPlaying = !isPlaying;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('btn-play').textContent = isPlaying ? '⏸ Pause' : '▶ Play';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('np-disc').classList.toggle('spinning', isPlaying);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (isPlaying) startProgress(); else stopProgress();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function startProgress() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>stopProgress();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>progressTimer = setInterval(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>progressVal = Math.min(progressVal + 0.5, 100);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('np-bar').style.width = progressVal + '%';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (progressVal &gt;= 100) { stopProgress(); isPlaying = false;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('btn-play').textContent = '▶ Play';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById('np-disc').classList.remove('spinning');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>progressVal = 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}, 100);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function stopProgress() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearInterval(progressTimer); progressTimer = null;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function playSong(id) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>playingId = id;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>progressVal = 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('np-bar').style.width = '0%';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>isPlaying = true;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('btn-play').textContent = '⏸ Pause';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('np-disc').classList.add('spinning');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>startProgress();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>render();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function playNext() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const arr = dll.toArray();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const idx = arr.findIndex(n =&gt; n.id === playingId);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (idx &lt; arr.length - 1) playSong(arr[idx+1].id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>else showToast('End of playlist', '');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function playPrev() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const arr = dll.toArray();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const idx = arr.findIndex(n =&gt; n.id === playingId);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (idx &gt; 0) playSong(arr[idx-1].id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>else showToast('Start of playlist', '');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══════════════════════════════════════════</p>
+<p class="p1"><span class="Apple-converted-space">   </span>OPERATIONS</p>
+<p class="p1">═══════════════════════════════════════════ */</p>
+<p class="p1">function addSong(where) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const title<span class="Apple-converted-space">  </span>= document.getElementById('inp-title').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const artist = document.getElementById('inp-artist').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!title) { showToast('Enter a song title', 'red'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const id = idCtr++;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (where === 'front') dll.addFront(title, artist || 'Unknown Artist', id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>else dll.addEnd(title, artist || 'Unknown Artist', id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!playingId) playingId = dll.head.id;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('inp-title').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('inp-artist').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>shuffled = false;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showToast(where==='front' ? '↑ Added to front' : '↓ Added to end', '');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function deleteByPos() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const pos = parseInt(document.getElementById('del-pos').value);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!pos || pos &lt; 1 || pos &gt; dll.size) { showToast('Invalid position', 'red'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const removed = dll.deleteAt(pos);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (removed &amp;&amp; removed.id === playingId) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>playingId = dll.head ? dll.head.id : null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>progressVal = 0; stopProgress(); isPlaying = false;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('del-pos').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showToast('✕ Removed "' + removed.title + '"', 'red');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function deleteById(id) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const node = dll.getById(id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!node) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>dll.deleteById(id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (id === playingId) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>playingId = dll.head ? dll.head.id : null;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>progressVal = 0; stopProgress(); isPlaying = false;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showToast('✕ Removed "' + node.title + '"', 'red');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function reverseShuffle() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (dll.size === 0) { showToast('No songs to shuffle', 'red'); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>dll.reverse();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>shuffled = !shuffled;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('shuffle-btn').classList.toggle('on', shuffled);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('shuffle-text').textContent = shuffled ? 'Reverse back' : 'Reverse shuffle';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>render();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showToast(shuffled ? '⇅ Shuffled (list reversed)' : '⇅ Restored original order', 'purple');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══════════════════════════════════════════</p>
+<p class="p1"><span class="Apple-converted-space">   </span>RENDER</p>
+<p class="p1">═══════════════════════════════════════════ */</p>
+<p class="p1">function esc(s) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return String(s).replace(/&amp;/g,'&amp;amp;').replace(/&lt;/g,'&amp;lt;').replace(/&gt;/g,'&amp;gt;').replace(/"/g,'&amp;quot;');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function render() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const arr = dll.toArray();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const playingNode = arr.find(n =&gt; n.id === playingId);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const playingPos<span class="Apple-converted-space">  </span>= arr.findIndex(n =&gt; n.id === playingId) + 1;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Stats */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('stat-count').textContent = arr.length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('stat-pos').textContent <span class="Apple-converted-space">  </span>= playingPos || '—';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('stat-mode').textContent<span class="Apple-converted-space">  </span>= shuffled ? 'ON' : 'OFF';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('main-meta').textContent<span class="Apple-converted-space">  </span>= arr.length + ' song' + (arr.length!==1?'s':'') + ' · doubly linked list';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('shuffled-badge').style.display = shuffled ? 'inline-flex' : 'none';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Now playing */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (playingNode) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('np-title').textContent<span class="Apple-converted-space">  </span>= playingNode.title;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('np-artist').textContent = playingNode.artist;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('btn-play').textContent<span class="Apple-converted-space">  </span>= isPlaying ? '⏸ Pause' : '▶ Play';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('np-title').textContent<span class="Apple-converted-space">  </span>= '—';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('np-artist').textContent = '—';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('btn-play').textContent<span class="Apple-converted-space">  </span>= '▶ Play';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('np-disc').classList.remove('spinning');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>/* Song list */</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const list = document.getElementById('songs-list');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (arr.length === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>list.innerHTML = '&lt;div class="empty-state"&gt;&lt;div class="empty-icon"&gt;♪&lt;/div&gt;&lt;p&gt;No songs yet.&lt;br/&gt;Add one from the sidebar.&lt;/p&gt;&lt;/div&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>let html = '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>arr.forEach((node, i) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const playing = node.id === playingId;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const prevLbl = node.prev ? node.prev.title : 'null';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const nextLbl = node.next ? node.next.title : 'null';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const hasPrev = !!node.prev, hasNext = !!node.next;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>html += `</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="song-row${playing?' playing':''}" onclick="playSong(${node.id})"</p>
+<p class="p1"><span class="Apple-converted-space">           </span>style="animation-delay:${i*0.04}s"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="song-num"&gt;${playing ? '♪' : i+1}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="song-body"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="song-title"&gt;${esc(node.title)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="song-artist"&gt;${esc(node.artist)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="song-ptrs"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="ptr-tag${hasPrev?' has-link':''}"&gt;&lt;span class="arrow"&gt;←&lt;/span&gt;${esc(prevLbl)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span class="ptr-tag${hasNext?' has-link':''}"&gt;&lt;span class="arrow"&gt;→&lt;/span&gt;${esc(nextLbl)}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="song-actions"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;button class="act-btn remove" onclick="event.stopPropagation();deleteById(${node.id})" title="Remove"&gt;✕&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (i &lt; arr.length - 1) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += `&lt;div class="dll-connector"&gt;&lt;div class="dll-line"&gt;&lt;/div&gt;&lt;span&gt;⇅&lt;/span&gt;&lt;div class="dll-line"&gt;&lt;/div&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>list.innerHTML = html;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* ═══════════════════════════════════════════</p>
+<p class="p1"><span class="Apple-converted-space">   </span>TOAST</p>
+<p class="p1">═══════════════════════════════════════════ */</p>
+<p class="p1">let toastTimer;</p>
+<p class="p1">function showToast(msg, type='') {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const t = document.getElementById('toast');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const m = document.getElementById('toast-msg');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>t.className = 'toast' + (type ? ' '+type : '');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>m.textContent = msg;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>t.classList.add('show');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearTimeout(toastTimer);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>toastTimer = setTimeout(() =&gt; t.classList.remove('show'), 2200);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">/* Enter key support */</p>
+<p class="p1">document.addEventListener('keydown', e =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (e.key === 'Enter') {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const ft = document.getElementById('inp-title');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const fa = document.getElementById('inp-artist');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (document.activeElement === ft || document.activeElement === fa) addSong('end');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">});</p>
+<p class="p2"><br></p>
+<p class="p1">render();</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
