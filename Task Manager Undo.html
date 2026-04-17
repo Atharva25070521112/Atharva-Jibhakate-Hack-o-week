@@ -1,0 +1,623 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.5">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1">&lt;title&gt;TaskStack — Undo/Redo Task Manager&lt;/title&gt;</p>
+<p class="p1">&lt;link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&amp;family=DM+Sans:wght@300;400;500&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>:root {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--bg: #0f0f11;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--surface: #18181c;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--surface2: #212127;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--border: rgba(255,255,255,0.07);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--border2: rgba(255,255,255,0.13);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--text: #f0ede8;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--muted: #7a7880;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--faint: #3a3840;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--accent: #c8f564;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--accent-dim: rgba(200,245,100,0.12);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--accent-border: rgba(200,245,100,0.3);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--blue: #5b9cf6;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--blue-dim: rgba(91,156,246,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--red: #f06b6b;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--red-dim: rgba(240,107,107,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--amber: #f5c542;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--amber-dim: rgba(245,197,66,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--green: #5edb97;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--green-dim: rgba(94,219,151,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>--radius-sm: 6px;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>html, body {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Sans', sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--bg);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>line-height: 1.6;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.layout {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: grid;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>grid-template-columns: 260px 1fr 300px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>grid-template-rows: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>gap: 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.sidebar {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-right: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.logo { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.logo-name { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--text); letter-spacing: -0.5px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.logo-sub { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 2px; font-family: 'DM Mono', monospace; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav { padding: 16px 12px; flex: 1; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav-section { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-family: 'DM Mono', monospace; padding: 8px 12px 6px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav-item {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex; align-items: center; gap: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 8px 12px; border-radius: var(--radius-sm);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>color: var(--muted); cursor: pointer; font-size: 13px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: all .15s; margin-bottom: 2px; user-select: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav-item:hover { background: var(--surface2); color: var(--text); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav-item.active { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav-icon { width: 16px; height: 16px; opacity: 0.7; flex-shrink: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav-item.active .nav-icon { opacity: 1; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav-badge { margin-left: auto; background: var(--surface2); color: var(--muted); font-size: 10px; font-family: 'DM Mono', monospace; padding: 1px 6px; border-radius: 99px; min-width: 20px; text-align: center; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.nav-item.active .nav-badge { background: var(--accent-border); color: var(--accent); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.sidebar-footer { padding: 16px; border-top: 1px solid var(--border); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-card { background: var(--surface2); border-radius: var(--radius-sm); padding: 10px 12px; border: 1px solid var(--border); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-family: 'DM Mono', monospace; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stat-value { font-size: 22px; font-family: 'Fraunces', serif; font-weight: 500; color: var(--text); line-height: 1.2; margin-top: 2px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.main { overflow-y: auto; display: flex; flex-direction: column; background: var(--bg); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.main-header { padding: 28px 32px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.main-title { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 300; letter-spacing: -0.5px; color: var(--text); line-height: 1.2; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.main-title em { font-style: italic; color: var(--accent); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.history-btns { display: flex; gap: 8px; flex-shrink: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.hbtn {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex; align-items: center; gap: 6px; padding: 7px 14px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: var(--radius-sm); border: 1px solid var(--border2);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface); color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace; font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cursor: pointer; transition: all .15s; user-select: none;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.hbtn:hover:not(:disabled) { color: var(--text); background: var(--surface2); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.hbtn:active:not(:disabled) { transform: scale(.97); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.hbtn:disabled { opacity: 0.3; cursor: not-allowed; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.hbtn-undo:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.hbtn-redo:hover:not(:disabled) { border-color: var(--green); color: var(--green); background: var(--green-dim); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.kbd { font-size: 10px; background: var(--surface2); border: 1px solid var(--border2); border-radius: 3px; padding: 0 4px; font-family: 'DM Mono', monospace; line-height: 1.6; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.add-section { padding: 20px 32px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.add-form { display: flex; gap: 8px; align-items: stretch; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.add-input {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>flex: 1; background: var(--surface); border: 1px solid var(--border2);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: var(--radius); padding: 11px 14px; color: var(--text);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color .2s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.add-input::placeholder { color: var(--muted); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.add-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(200,245,100,0.07); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.priority-select {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 11px 12px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>outline: none; cursor: pointer; transition: border-color .2s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.priority-select:focus { border-color: var(--accent); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.priority-select option { background: var(--surface2); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.add-btn {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--accent); color: #0f0f11; border: none; border-radius: var(--radius);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 11px 20px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cursor: pointer; white-space: nowrap; transition: all .15s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.add-btn:hover { background: #d4fb7a; transform: translateY(-1px); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.add-btn:active { transform: scale(.97); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.filter-bar { padding: 0 32px 16px; display: flex; gap: 6px; flex-wrap: wrap; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.filter-btn { padding: 4px 12px; border-radius: 99px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 12px; font-family: 'DM Mono', monospace; cursor: pointer; transition: all .15s; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.filter-btn:hover { border-color: var(--border2); color: var(--text); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.filter-btn.active { background: var(--accent-dim); border-color: var(--accent-border); color: var(--accent); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-section { padding: 0 32px 32px; flex: 1; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-list { display: flex; flex-direction: column; gap: 6px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-card {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex; align-items: center; gap: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface); border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: var(--radius); padding: 13px 16px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: border-color .15s; animation: slideIn .2s ease;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>@keyframes slideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-card:hover { border-color: var(--border2); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-card.done-card { opacity: 0.5; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-cb {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>width: 17px; height: 17px; border-radius: 50%; border: 1.5px solid var(--faint);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex; align-items: center; justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cursor: pointer; flex-shrink: 0; transition: all .15s; background: transparent;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-cb:hover { border-color: var(--accent); background: var(--accent-dim); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-cb.checked { border-color: var(--accent); background: var(--accent); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-cb.checked svg { display: block; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.check-icon { display: none; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-text { flex: 1; font-size: 14px; color: var(--text); cursor: pointer; word-break: break-word; transition: color .15s; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-text:hover { color: var(--accent); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-text.done { text-decoration: line-through; color: var(--muted); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.edit-input { flex: 1; background: transparent; border: none; outline: none; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); caret-color: var(--accent); border-bottom: 1px solid var(--accent); padding-bottom: 2px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.priority-badge { font-size: 10px; font-family: 'DM Mono', monospace; font-weight: 500; padding: 3px 8px; border-radius: 99px; letter-spacing: 0.05em; text-transform: uppercase; flex-shrink: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.p-high { background: var(--red-dim); color: var(--red); border: 1px solid rgba(240,107,107,0.25); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.p-med<span class="Apple-converted-space">  </span>{ background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,197,66,0.25); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.p-low<span class="Apple-converted-space">  </span>{ background: var(--green-dim); color: var(--green); border: 1px solid rgba(94,219,151,0.25); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-actions { display: flex; gap: 4px; opacity: 0; transition: opacity .15s; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.task-card:hover .task-actions { opacity: 1; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.icon-btn { background: transparent; border: 1px solid transparent; border-radius: var(--radius-sm); padding: 4px 6px; cursor: pointer; color: var(--muted); font-size: 13px; line-height: 1; transition: all .15s; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.icon-btn:hover { background: var(--surface2); color: var(--text); border-color: var(--border); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.icon-btn.del:hover { background: var(--red-dim); color: var(--red); border-color: rgba(240,107,107,0.3); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.empty-state { text-align: center; padding: 48px 0; color: var(--muted); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.empty-state .emoji { font-size: 32px; margin-bottom: 12px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.empty-state p { font-family: 'Fraunces', serif; font-style: italic; font-size: 16px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stacks-panel { background: var(--surface); border-left: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; padding: 24px 20px; gap: 20px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.panel-title { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-family: 'DM Mono', monospace; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.panel-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stack-visual { display: flex; flex-direction: column; gap: 4px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stack-entry {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>display: flex; align-items: center; gap: 8px; padding: 8px 10px;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>border-radius: var(--radius-sm); border: 1px solid var(--border);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface2); font-size: 12px; color: var(--muted);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>font-family: 'DM Mono', monospace; animation: fadeIn .2s;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>@keyframes fadeIn { from { opacity:0; transform:translateY(4px) } to { opacity:1; transform:none } }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stack-entry.top-undo { border-color: rgba(91,156,246,0.4); background: var(--blue-dim); color: var(--blue); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stack-entry.top-redo { border-color: rgba(94,219,151,0.4); background: var(--green-dim); color: var(--green); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stack-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stack-entry-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stack-top-tag { font-size: 9px; padding: 1px 5px; border-radius: 3px; background: currentColor; color: var(--bg); font-weight: 500; flex-shrink: 0; filter: brightness(0.9); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stack-empty { font-size: 12px; color: var(--faint); font-family: 'DM Mono', monospace; padding: 8px 0; text-align: center; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.stack-arrow { display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 10px; color: var(--faint); font-family: 'DM Mono', monospace; padding: 2px 0; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.history-log { flex: 1; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.log-entry { display: flex; gap: 8px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--border); animation: fadeIn .2s; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.log-time { font-size: 10px; font-family: 'DM Mono', monospace; color: var(--faint); flex-shrink: 0; padding-top: 2px; min-width: 40px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.log-action { font-size: 12px; color: var(--muted); line-height: 1.5; word-break: break-word; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.action-type { font-family: 'DM Mono', monospace; font-size: 10px; padding: 1px 5px; border-radius: 3px; margin-right: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.at-add<span class="Apple-converted-space">    </span>{ background: var(--green-dim);<span class="Apple-converted-space">  </span>color: var(--green); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.at-delete { background: var(--red-dim);<span class="Apple-converted-space">    </span>color: var(--red); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.at-edit <span class="Apple-converted-space">  </span>{ background: var(--blue-dim); <span class="Apple-converted-space">  </span>color: var(--blue); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.at-toggle { background: var(--amber-dim);<span class="Apple-converted-space">  </span>color: var(--amber); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.at-undo <span class="Apple-converted-space">  </span>{ background: rgba(91,156,246,0.15); color: var(--blue); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.at-redo <span class="Apple-converted-space">  </span>{ background: rgba(94,219,151,0.15); color: var(--green); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>.toast {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(8px);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>background: var(--surface2); border: 1px solid var(--border2); border-radius: var(--radius);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>padding: 9px 18px; font-size: 13px; color: var(--text); opacity: 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>transition: opacity .2s, transform .2s; pointer-events: none; z-index: 999;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>white-space: nowrap; font-family: 'DM Mono', monospace; letter-spacing: 0.02em;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>::-webkit-scrollbar { width: 4px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>::-webkit-scrollbar-track { background: transparent; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>::-webkit-scrollbar-thumb { background: var(--faint); border-radius: 4px; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>@media (max-width: 900px) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.layout { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.sidebar { display: none; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.stacks-panel { border-left: none; border-top: 1px solid var(--border); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.main { overflow-y: visible; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="layout"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Sidebar --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;aside class="sidebar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="logo"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="logo-name"&gt;TaskStack&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="logo-sub"&gt;Undo · Redo · History&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;nav class="nav"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-section"&gt;Views&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-item active" onclick="setFilter('all')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;rect x="1" y="1" width="6" height="6" rx="1"/&gt;&lt;rect x="9" y="1" width="6" height="6" rx="1"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;rect x="1" y="9" width="6" height="6" rx="1"/&gt;&lt;rect x="9" y="9" width="6" height="6" rx="1"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>All tasks &lt;span class="nav-badge" id="badge-all"&gt;0&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-item" onclick="setFilter('active')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;circle cx="8" cy="8" r="6"/&gt;&lt;path d="M5 8l2 2 4-4"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Active &lt;span class="nav-badge" id="badge-active"&gt;0&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-item" onclick="setFilter('done')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;path d="M2 8l4 4 8-8"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Completed &lt;span class="nav-badge" id="badge-done"&gt;0&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-section" style="margin-top:12px"&gt;Priority&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-item" onclick="setFilter('high')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span style="width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block;flex-shrink:0"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>High &lt;span class="nav-badge" id="badge-high"&gt;0&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-item" onclick="setFilter('med')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span style="width:8px;height:8px;border-radius:50%;background:var(--amber);display:inline-block;flex-shrink:0"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Medium &lt;span class="nav-badge" id="badge-med"&gt;0&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="nav-item" onclick="setFilter('low')"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;flex-shrink:0"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>Low &lt;span class="nav-badge" id="badge-low"&gt;0&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/nav&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="sidebar-footer"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stat-row"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat-card"&gt;&lt;div class="stat-label"&gt;Total&lt;/div&gt;&lt;div class="stat-value" id="stat-total"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat-card"&gt;&lt;div class="stat-label"&gt;Done&lt;/div&gt;&lt;div class="stat-value" id="stat-done"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat-card"&gt;&lt;div class="stat-label"&gt;Undos&lt;/div&gt;&lt;div class="stat-value" id="stat-undos"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stat-card"&gt;&lt;div class="stat-label"&gt;Redos&lt;/div&gt;&lt;div class="stat-value" id="stat-redos"&gt;0&lt;/div&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/aside&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Main --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;main class="main"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="main-header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="main-title"&gt;My tasks &lt;em id="filterLabel"&gt;— all&lt;/em&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="history-btns"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="hbtn hbtn-undo" id="undoBtn" onclick="undo()" disabled&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;path d="M3 7C3 4.8 4.8 3 7 3h4a3 3 0 010 6H7"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;path d="M5 5L3 7l2 2" stroke-linejoin="round" stroke-linecap="round"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>Undo &lt;span class="kbd"&gt;⌘Z&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="hbtn hbtn-redo" id="redoBtn" onclick="redo()" disabled&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;path d="M13 7C13 4.8 11.2 3 9 3H5a3 3 0 000 6h4"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;path d="M11 5l2 2-2 2" stroke-linejoin="round" stroke-linecap="round"/&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>Redo &lt;span class="kbd"&gt;⌘Y&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="add-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="add-form"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;input class="add-input" id="taskInput" type="text" placeholder="Add a new task… press Enter" onkeydown="if(event.key==='Enter')addTask()"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;select class="priority-select" id="prioritySelect"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="high"&gt;🔴 High&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="med" selected&gt;🟡 Med&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;option value="low"&gt;🟢 Low&lt;/option&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/select&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="add-btn" onclick="addTask()"&gt;+ Add task&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="filter-bar"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="filter-btn active" id="fb-all"<span class="Apple-converted-space">    </span>onclick="setFilter('all')"&gt;All&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="filter-btn"<span class="Apple-converted-space">        </span>id="fb-active" onclick="setFilter('active')"&gt;Active&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="filter-btn"<span class="Apple-converted-space">        </span>id="fb-done" <span class="Apple-converted-space">  </span>onclick="setFilter('done')"&gt;Done&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="filter-btn"<span class="Apple-converted-space">        </span>id="fb-high" <span class="Apple-converted-space">  </span>onclick="setFilter('high')"&gt;High&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="filter-btn"<span class="Apple-converted-space">        </span>id="fb-med"<span class="Apple-converted-space">    </span>onclick="setFilter('med')"&gt;Med&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="filter-btn"<span class="Apple-converted-space">        </span>id="fb-low"<span class="Apple-converted-space">    </span>onclick="setFilter('low')"&gt;Low&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="task-section"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="task-list" id="taskList"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/main&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;!-- Stacks Panel --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;aside class="stacks-panel"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="panel-title"&gt;Undo stack&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stack-arrow"&gt;← pop on undo &amp;nbsp;|&amp;nbsp; push on action →&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stack-visual" id="undoStackEl"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="panel-title"&gt;Redo stack&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stack-arrow"&gt;← pop on redo &amp;nbsp;|&amp;nbsp; push on undo →&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="stack-visual" id="redoStackEl"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="history-log"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="panel-title"&gt;Activity log&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="logEl"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/aside&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="toast" id="toast"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1">let tasks = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ id:1, text:'Design the landing page hero', priority:'high', done:false },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ id:2, text:'Write unit tests for auth module', priority:'med', done:false },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ id:3, text:'Update project README', priority:'low', done:true },</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{ id:4, text:'Code review — PR #42', priority:'high', done:false },</p>
+<p class="p1">];</p>
+<p class="p1">let nextId = 5;</p>
+<p class="p1">let currentFilter = 'all';</p>
+<p class="p1">let editingId = null;</p>
+<p class="p2"><br></p>
+<p class="p1">const undoStack = [];</p>
+<p class="p1">const redoStack = [];</p>
+<p class="p1">let undoCount = 0;</p>
+<p class="p1">let redoCount = 0;</p>
+<p class="p2"><br></p>
+<p class="p1">function snap() { return JSON.parse(JSON.stringify(tasks)); }</p>
+<p class="p2"><br></p>
+<p class="p1">function pushUndo(prev) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>undoStack.push(prev);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>redoStack.length = 0;<span class="Apple-converted-space">  </span>// clear redo on new action</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function undo() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!undoStack.length) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>redoStack.push(snap());</p>
+<p class="p1"><span class="Apple-converted-space">  </span>tasks = undoStack.pop();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>undoCount++;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>logAction('undo', 'Undo performed');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderAll();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showToast('↺ Undone');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function redo() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!redoStack.length) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>undoStack.push(snap());</p>
+<p class="p1"><span class="Apple-converted-space">  </span>tasks = redoStack.pop();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>redoCount++;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>logAction('redo', 'Redo performed');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderAll();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showToast('↻ Redone');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function addTask() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const inp = document.getElementById('taskInput');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const pri = document.getElementById('prioritySelect').value;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const text = inp.value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!text) { inp.focus(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const prev = snap();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>tasks.push({ id: nextId++, text, priority: pri, done: false });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pushUndo(prev);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>logAction('add', `Added "${shorten(text)}"`);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>inp.value = '';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderAll();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function deleteTask(id) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const t = tasks.find(t =&gt; t.id === id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const prev = snap();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>tasks = tasks.filter(t =&gt; t.id !== id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pushUndo(prev);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>logAction('delete', `Deleted "${shorten(t?.text || '')}"`);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderAll();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showToast('Task removed');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function toggleDone(id) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const prev = snap();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const t = tasks.find(t =&gt; t.id === id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (t) t.done = !t.done;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>pushUndo(prev);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>logAction('toggle', `${t?.done ? 'Checked' : 'Unchecked'} "${shorten(t?.text || '')}"`);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderAll();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function startEdit(id) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>editingId = id;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderAll();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const inp = document.querySelector('.edit-input');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function commitEdit(id, val) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (editingId !== id) return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>editingId = null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const text = val.trim();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!text) { renderAll(); return; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const t = tasks.find(t =&gt; t.id === id);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (t &amp;&amp; t.text !== text) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const prev = snap();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>t.text = text;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>pushUndo(prev);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>logAction('edit', `Edited → "${shorten(text)}"`);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderAll();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function setFilter(f) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>currentFilter = f;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.nav-item').forEach(el =&gt; el.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll('.filter-btn').forEach(el =&gt; el.classList.remove('active'));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const navMap = { all:0, active:1, done:2, high:3, med:4, low:5 };</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const navItems = document.querySelectorAll('.nav-item');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (navMap[f] !== undefined) navItems[navMap[f]]?.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const fb = document.getElementById('fb-' + f);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (fb) fb.classList.add('active');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('filterLabel').textContent = '— ' + f;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderAll();</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function shorten(s) { return s.length &gt; 22 ? s.slice(0, 21) + '…' : s; }</p>
+<p class="p1">function esc(s) { return s.replace(/&amp;/g,'&amp;amp;').replace(/&lt;/g,'&amp;lt;').replace(/&gt;/g,'&amp;gt;').replace(/"/g,'&amp;quot;'); }</p>
+<p class="p2"><br></p>
+<p class="p1">function filteredTasks() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>switch (currentFilter) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>case 'active': return tasks.filter(t =&gt; !t.done);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>case 'done': <span class="Apple-converted-space">  </span>return tasks.filter(t =&gt; t.done);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>case 'high': <span class="Apple-converted-space">  </span>return tasks.filter(t =&gt; t.priority === 'high');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>case 'med':<span class="Apple-converted-space">    </span>return tasks.filter(t =&gt; t.priority === 'med');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>case 'low':<span class="Apple-converted-space">    </span>return tasks.filter(t =&gt; t.priority === 'low');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>default: <span class="Apple-converted-space">      </span>return tasks;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function renderAll() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderTasks();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderStacks();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>renderStats();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('undoBtn').disabled = undoStack.length === 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('redoBtn').disabled = redoStack.length === 0;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function renderTasks() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const list = document.getElementById('taskList');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const ft = filteredTasks();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!ft.length) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>list.innerHTML = `&lt;div class="empty-state"&gt;&lt;div class="emoji"&gt;✦&lt;/div&gt;&lt;p&gt;No tasks here yet&lt;/p&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>list.innerHTML = ft.map(t =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const cbClass = t.done ? 'task-cb checked' : 'task-cb';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const checkSvg = `&lt;svg class="check-icon" width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="#0f0f11" stroke-width="2"&gt;&lt;path d="M2 5l2.5 2.5 4-4"/&gt;&lt;/svg&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const badge = `&lt;span class="priority-badge p-${t.priority}"&gt;${t.priority}&lt;/span&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const textPart = editingId === t.id</p>
+<p class="p1"><span class="Apple-converted-space">      </span>? `&lt;input class="edit-input" value="${esc(t.text)}"</p>
+<p class="p1"><span class="Apple-converted-space">           </span>onblur="commitEdit(${t.id},this.value)"</p>
+<p class="p1"><span class="Apple-converted-space">           </span>onkeydown="if(event.key==='Enter')this.blur();if(event.key==='Escape'){editingId=null;renderAll()}"&gt;`</p>
+<p class="p1"><span class="Apple-converted-space">      </span>: `&lt;span class="task-text${t.done?' done':''}" ondblclick="startEdit(${t.id})" title="Double-click to edit"&gt;${esc(t.text)}&lt;/span&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>return `&lt;div class="task-card${t.done?' done-card':''}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="${cbClass}" onclick="toggleDone(${t.id})"&gt;${checkSvg}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${textPart}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>${badge}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="task-actions"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="icon-btn" onclick="startEdit(${t.id})" title="Edit"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"&gt;&lt;path d="M11.5 2.5a1.5 1.5 0 012.1 2.1L5 13.2l-3 .8.8-3L11.5 2.5z"/&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="icon-btn del" onclick="deleteTask(${t.id})" title="Delete"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"&gt;&lt;path d="M4 4l8 8M12 4l-8 8"/&gt;&lt;/svg&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}).join('');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function actionLabel(curr, prev) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (curr.length &gt; prev.length) return 'add';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (curr.length &lt; prev.length) return 'delete';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for (let i = 0; i &lt; Math.min(curr.length, prev.length); i++) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (curr[i].done !== prev[i].done) return `toggle "${shorten(curr[i].text)}"`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (curr[i].text !== prev[i].text) return `edit "${shorten(curr[i].text)}"`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>return 'change';</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function renderStacks() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const uEl = document.getElementById('undoStackEl');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const rEl = document.getElementById('redoStackEl');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!undoStack.length) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>uEl.innerHTML = '&lt;div class="stack-empty"&gt;— empty —&lt;/div&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>uEl.innerHTML = [...undoStack].reverse().map((prev, idx) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const isTop = idx === 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const label = actionLabel(tasks, prev);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return `&lt;div class="stack-entry ${isTop?'top-undo':''}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stack-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="stack-entry-label"&gt;${label}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>${isTop?'&lt;span class="stack-top-tag"&gt;TOP&lt;/span&gt;':''}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}).join('');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (!redoStack.length) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>rEl.innerHTML = '&lt;div class="stack-empty"&gt;— empty —&lt;/div&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>rEl.innerHTML = [...redoStack].reverse().map((_, idx) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const isTop = idx === 0;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return `&lt;div class="stack-entry ${isTop?'top-redo':''}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="stack-dot"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;span class="stack-entry-label"&gt;snapshot ${redoStack.length - idx}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>${isTop?'&lt;span class="stack-top-tag"&gt;TOP&lt;/span&gt;':''}</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}).join('');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function renderStats() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const done = tasks.filter(t =&gt; t.done).length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('stat-total').textContent = tasks.length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('stat-done').textContent<span class="Apple-converted-space">  </span>= done;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('stat-undos').textContent = undoCount;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('stat-redos').textContent = redoCount;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('badge-all').textContent<span class="Apple-converted-space">    </span>= tasks.length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('badge-active').textContent = tasks.filter(t =&gt; !t.done).length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('badge-done').textContent <span class="Apple-converted-space">  </span>= done;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('badge-high').textContent <span class="Apple-converted-space">  </span>= tasks.filter(t =&gt; t.priority==='high').length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('badge-med').textContent<span class="Apple-converted-space">    </span>= tasks.filter(t =&gt; t.priority==='med').length;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('badge-low').textContent<span class="Apple-converted-space">    </span>= tasks.filter(t =&gt; t.priority==='low').length;</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">const logEntries = [];</p>
+<p class="p1">function logAction(type, msg) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const now = new Date();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const time = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>logEntries.unshift({ type, msg, time });</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (logEntries.length &gt; 20) logEntries.pop();</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById('logEl').innerHTML = logEntries.map(e =&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>`&lt;div class="log-entry"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="log-time"&gt;${e.time}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="log-action"&gt;&lt;span class="action-type at-${e.type}"&gt;${e.type}&lt;/span&gt;${esc(e.msg)}&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;`</p>
+<p class="p1"><span class="Apple-converted-space">  </span>).join('');</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">let toastTimer;</p>
+<p class="p1">function showToast(msg) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const el = document.getElementById('toast');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.textContent = msg;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>el.classList.add('show');</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearTimeout(toastTimer);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>toastTimer = setTimeout(() =&gt; el.classList.remove('show'), 1800);</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">document.addEventListener('keydown', e =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const tag = document.activeElement.tagName;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (tag === 'INPUT' || tag === 'TEXTAREA') return;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if ((e.ctrlKey || e.metaKey) &amp;&amp; e.key === 'z' &amp;&amp; !e.shiftKey) { e.preventDefault(); undo(); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if ((e.ctrlKey || e.metaKey) &amp;&amp; (e.key === 'y' || (e.key === 'z' &amp;&amp; e.shiftKey))) { e.preventDefault(); redo(); }</p>
+<p class="p1">});</p>
+<p class="p2"><br></p>
+<p class="p1">renderAll();</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
